@@ -110,6 +110,11 @@ function playAudio() {
     if (audioContext.state === 'suspended') {
         return;
     }
+    dspNode.setParamValue("/torpedo/Freeverb/0x00/Damp", 0.5);
+    dspNode.setParamValue("/torpedo/Freeverb/0x00/RoomSize", 0.5);
+    dspNode.setParamValue("/torpedo/Freeverb/0x00/Stereo_Spread", 0.5);
+    dspNode.setParamValue("/torpedo/Wet", 0.15);
+    dspNode.setParamValue("/torpedo/Freq", 5000);
     dspNode.setParamValue("/torpedo/trigger", 1)
     setTimeout(() => { dspNode.setParamValue("/thunder/trigger", 0) }, 100);
 }
