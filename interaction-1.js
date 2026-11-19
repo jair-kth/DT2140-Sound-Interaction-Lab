@@ -12,7 +12,7 @@ let dspNodeParams = null;
 let jsonParams = null;
 
 // Change here to ("tuono") depending on your wasm file name
-const dspName = "windchimes";
+const dspName = "door";
 const instance = new FaustWasm2ScriptProcessor(dspName);
 
 // output to window or npm package module
@@ -25,7 +25,7 @@ if (typeof module === "undefined") {
 }
 
 // The name should be the same as the WASM file, so change tuono with brass if you use brass.wasm
-windchimes.createDSP(audioContext, 1024)
+door.createDSP(audioContext, 1024)
     .then(node => {
         dspNode = node;
         dspNode.connect(audioContext.destination);
@@ -55,11 +55,17 @@ function accelerationChange(accx, accy, accz) {
     // playAudio()
 }
 
+let lastTiltTrigger = 0;
 function rotationChange(rotx, roty, rotz) {
+    const now = millis();
+    if (Math.abs(roty) > 35 && now - lastTiltTrigger > 300) {
+        lastTiltTrigger = now;
+        playAudio();
+    }
 }
 
 function mousePressed() {
-    playAudio()
+    //playAudio()
     // Use this for debugging from the desktop!
 }
 
@@ -106,8 +112,8 @@ function playAudio() {
     // them printed on the console of your browser when you load the page)
     // For example if you change to a bell sound, here you could use "/churchBell/gate" instead of
     // "/thunder/rumble".
-    dspNode.setParamValue("/windchimes/wind", 1)
-    setTimeout(() => { dspNode.setParamValue("/windchimes/wind", 0) }, 100);
+    dspNode.setParamValue("/door/door", 1)
+    setTimeout(() => { dspNode.setParamValue("/door/door", 0) }, 100);
 }
 
 //==========================================================================================
