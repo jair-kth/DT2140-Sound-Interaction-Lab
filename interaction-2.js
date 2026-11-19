@@ -58,7 +58,7 @@ function accelerationChange(accx, accy, accz) {
     if (now - movetimer > 150) {
         moveStartedAt = now;
     }
-    if (MMath.abs(accy) > 12 && now - moveStartedAt >= 180 && now - lastFallTrigger > 1000) {
+    if (Math.abs(accy) > 12 && now - moveStartedAt >= 180 && now - lastFallTrigger > 1000) {
         lastFallTrigger = now;
         playAudio();
     }
