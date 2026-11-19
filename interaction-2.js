@@ -52,16 +52,19 @@ thunder.createDSP(audioContext, 1024)
 //==========================================================================================
 
 let lastFallTrigger = 0;
-let moveStartedAt = 0;
+let fallStart = 0;
 function accelerationChange(accx, accy, accz) {
     const now = millis();
-    if (now - movetimer > 150) {
-        moveStartedAt = now;
-    }
-    if (Math.abs(accy) > 18 && now - moveStartedAt >= 220 && now - lastFallTrigger > 1000) {
-        lastFallTrigger = now;
-        moveStartedAt = now;
-        playAudio();
+    const totalAcc = Math.hypot(accx, accy, accz);
+
+    if (totalAcc > 8 && fallStart == 0) {
+        fallStart = now;
+    } else {
+        if (fallStart > 0 && now - fallStart > 220 && now - lastFallTrigger > 1000) {
+            lastFallTrigger = now;
+            playAudio();
+        }
+        fallStart = 0;
     }
 }
 
@@ -84,7 +87,7 @@ function deviceTurned() {
 function deviceShaken() {
     shaketimer = millis();
     statusLabels[0].style("color", "pink");
-    playAudio();
+    //playAudio();
 }
 
 function getMinMaxParam(address) {
