@@ -57,7 +57,7 @@ function accelerationChange(accx, accy, accz) {
     const now = millis();
     const totalAcc = Math.hypot(accx, accy, accz);
 
-    if (totalAcc > 8) {
+    if (totalAcc > 8 && totalAcc < 13) {
         if (fallStart == 0) {
             fallStart = now;
         }
