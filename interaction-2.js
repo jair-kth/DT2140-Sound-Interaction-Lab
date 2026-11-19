@@ -55,6 +55,7 @@ torpedo.createDSP(audioContext, 1024)
 function accelerationChange(accx, accy, accz) {
 }
 
+let pointingUp = false;
 function rotationChange(rotx, roty, rotz) {
     if (rotx > 80 && rotx < 100) {
         if (!pointingUp) {
@@ -116,7 +117,7 @@ function playAudio() {
     dspNode.setParamValue("/torpedo/Wet", 0);
     dspNode.setParamValue("/torpedo/Freq", 5000);
     dspNode.setParamValue("/torpedo/trigger", 1)
-    setTimeout(() => { dspNode.setParamValue("/thunder/trigger", 0) }, 100);
+    setTimeout(() => { dspNode.setParamValue("/torpedo/trigger", 0) }, 100);
 }
 
 //==========================================================================================
