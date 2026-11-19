@@ -57,8 +57,10 @@ function accelerationChange(accx, accy, accz) {
     const now = millis();
     const totalAcc = Math.hypot(accx, accy, accz);
 
-    if (totalAcc > 8 && fallStart == 0) {
-        fallStart = now;
+    if (totalAcc > 8) {
+        if (fallStart == 0) {
+            fallStart = now;
+        }
     } else {
         if (fallStart > 0 && now - fallStart > 220 && now - lastFallTrigger > 1000) {
             lastFallTrigger = now;
