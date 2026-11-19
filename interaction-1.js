@@ -55,13 +55,9 @@ function accelerationChange(accx, accy, accz) {
     // playAudio()
 }
 
-let lastTiltTrigger = 0;
 function rotationChange(rotx, roty, rotz) {
-    const now = millis();
-    if (Math.abs(roty) > 35 && now - lastTiltTrigger > 300) {
-        lastTiltTrigger = now;
-        playAudio();
-    }
+    const rainAmount = constrain(Math.abs(roty) / 45, 0, 1);
+    playAudio(rainAmount);
 }
 
 function mousePressed() {
@@ -101,7 +97,7 @@ function getMinMaxParam(address) {
 //
 //==========================================================================================
 
-function playAudio() {
+function playAudio(amount = 0) {
     if (!dspNode) {
         return;
     }
@@ -112,8 +108,8 @@ function playAudio() {
     // them printed on the console of your browser when you load the page)
     // For example if you change to a bell sound, here you could use "/churchBell/gate" instead of
     // "/thunder/rumble".
-    dspNode.setParamValue("/door/door", 1)
-    setTimeout(() => { dspNode.setParamValue("/door/door", 0) }, 100);
+    dspNode.setParamValue("/rain/density", amount);
+    //setTimeout(() => { dspNode.setParamValue("/door/door", 0) }, 100);
 }
 
 //==========================================================================================
