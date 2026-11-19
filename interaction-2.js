@@ -12,7 +12,7 @@ let dspNodeParams = null;
 let jsonParams = null;
 
 // Change here to ("tuono") depending on your wasm file name
-const dspName = "thunder";
+const dspName = "torpedo";
 const instance = new FaustWasm2ScriptProcessor(dspName);
 
 // output to window or npm package module
@@ -25,7 +25,7 @@ if (typeof module === "undefined") {
 }
 
 // The name should be the same as the WASM file, so change tuono with brass if you use brass.wasm
-thunder.createDSP(audioContext, 1024)
+torpedo.createDSP(audioContext, 1024)
     .then(node => {
         dspNode = node;
         dspNode.connect(audioContext.destination);
@@ -51,26 +51,19 @@ thunder.createDSP(audioContext, 1024)
 //
 //==========================================================================================
 
-let lastFallTrigger = 0;
-let fallStart = 0;
-function accelerationChange(accx, accy, accz) {
-    const now = millis();
-    const totalAcc = Math.hypot(accx, accy, accz);
 
-    if (totalAcc > 16 && totalAcc < 26) {
-        if (fallStart == 0) {
-            fallStart = now;
-        }
-    } else {
-        if (fallStart > 0 && now - fallStart > 220 && now - lastFallTrigger > 1000) {
-            lastFallTrigger = now;
-            playAudio();
-        }
-        fallStart = 0;
-    }
+function accelerationChange(accx, accy, accz) {
 }
 
 function rotationChange(rotx, roty, rotz) {
+    if (rotx > 80 && rotx < 100) {
+        if (!pointingUp) {
+            pointingUp = true;
+            playAudio();
+        }
+    } else {
+        pointingUp = false;
+    }
 }
 
 function mousePressed() {
@@ -117,8 +110,8 @@ function playAudio() {
     if (audioContext.state === 'suspended') {
         return;
     }
-    dspNode.setParamValue("/thunder/rumble", 1)
-    setTimeout(() => { dspNode.setParamValue("/thunder/rumble", 0) }, 100);
+    dspNode.setParamValue("/torpedo/trigger", 1)
+    setTimeout(() => { dspNode.setParamValue("/thunder/trigger", 0) }, 100);
 }
 
 //==========================================================================================
