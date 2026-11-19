@@ -54,7 +54,7 @@ thunder.createDSP(audioContext, 1024)
 let lastFallTrigger = 0;
 function accelerationChange(accx, accy, accz) {
     const now = millis();
-    if (Math.abs(accy) < 3 && now - lastFallTrigger > 1000) {
+    if (Math.abs(accy) > 12 && now - lastFallTrigger > 1000) {
         lastFallTrigger = now;
         playAudio();
     }
